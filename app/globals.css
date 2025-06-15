@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.soil-texture {
+  background-image: radial-gradient(circle at 25% 25%, rgba(39, 174, 96, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(39, 174, 96, 0.05) 0%, transparent 50%);
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .hero-shadow {
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Smooth scrolling for all browsers */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure mobile menu doesn't interfere with content */
+@media (max-width: 767px) {
+  body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+}
+
+/* Custom hamburger animation */
+.hamburger-line {
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 767px) {
+  .mobile-nav-item {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+body {
+  overflow-x: hidden;
+}
+
+/* Better backdrop blur support */
+@supports (backdrop-filter: blur(10px)) {
+  .backdrop-blur-xl {
+    backdrop-filter: blur(24px);
+  }
+
+  .backdrop-blur-md {
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  .backdrop-blur-xl {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .backdrop-blur-md {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}
