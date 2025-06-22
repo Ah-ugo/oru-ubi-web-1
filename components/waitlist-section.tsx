@@ -1,45 +1,63 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef, useState } from "react"
-import { CheckCircle, Loader2, Users, Bell, Gift } from "lucide-react"
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { CheckCircle, Loader2, Users, Bell, Gift } from "lucide-react";
+import axios from "axios";
 
 export default function WaitlistSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    role: "farmer",
-    location: "",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+    // role: "farmer",
+    // location: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${process.env.NEXT_PUBLIC_API_KEY}`,
+    };
+    console.log(headers, " ", formData);
+    const resp = await axios.post(
+      "https://oru-ubi-app.onrender.com/api/join/",
+      formData,
+      { headers }
+    );
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
+    console.log(resp);
+    setIsSubmitting(false);
+    if (!resp) {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    }
+    // setIsSubmitted(true);
+  };
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-    }))
-  }
+    }));
+  };
 
   if (isSubmitted) {
     return (
-      <section id="waitlist" className="py-20 lg:py-32 relative overflow-hidden">
+      <section
+        id="waitlist"
+        className="py-20 lg:py-32 relative overflow-hidden"
+      >
         {/* Background */}
         <div className="absolute inset-0">
           <img
@@ -57,7 +75,10 @@ export default function WaitlistSection() {
             transition={{ duration: 0.8 }}
             className="glass-effect border border-oru-green/30 rounded-3xl p-12 lg:p-16"
           >
-            <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}>
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+            >
               <CheckCircle className="w-24 h-24 text-oru-green mx-auto mb-8" />
             </motion.div>
 
@@ -66,8 +87,8 @@ export default function WaitlistSection() {
             </h2>
 
             <p className="text-xl lg:text-2xl text-gray-300 leading-relaxed mb-8 max-w-3xl mx-auto">
-              You're now part of a movement that will transform Nigerian agriculture. Together, we're planting the seeds
-              of change.
+              You're now part of a movement that will transform Nigerian
+              agriculture. Together, we're planting the seeds of change.
             </p>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -93,7 +114,7 @@ export default function WaitlistSection() {
           </motion.div>
         </div>
       </section>
-    )
+    );
   }
 
   return (
@@ -120,8 +141,8 @@ export default function WaitlistSection() {
             Join the <span className="gradient-text">Movement</span>
           </h2>
           <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            Be among the first to experience the future of Nigerian agriculture. Your journey from soil to soul starts
-            here.
+            Be among the first to experience the future of Nigerian agriculture.
+            Your journey from soil to soul starts here.
           </p>
         </motion.div>
 
@@ -136,7 +157,10 @@ export default function WaitlistSection() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-oru-green mb-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-semibold text-oru-green mb-2"
+                    >
                       Full Name
                     </label>
                     <input
@@ -152,7 +176,10 @@ export default function WaitlistSection() {
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-oru-green mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-semibold text-oru-green mb-2"
+                    >
                       Email Address
                     </label>
                     <input
@@ -168,7 +195,7 @@ export default function WaitlistSection() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                {/* <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="role" className="block text-sm font-semibold text-oru-green mb-2">
                       I am a...
@@ -212,7 +239,7 @@ export default function WaitlistSection() {
                       placeholder="e.g., Lagos, Kaduna"
                     />
                   </div>
-                </div>
+                </div> */}
 
                 <motion.button
                   type="submit"
@@ -234,7 +261,8 @@ export default function WaitlistSection() {
 
               <div className="mt-6 pt-6 border-t border-white/10 text-center">
                 <p className="text-sm text-gray-400">
-                  By joining, you agree to receive updates about Oru-Ubi. We respect your privacy.
+                  By joining, you agree to receive updates about Oru-Ubi. We
+                  respect your privacy.
                 </p>
               </div>
             </div>
@@ -248,24 +276,29 @@ export default function WaitlistSection() {
             className="space-y-8"
           >
             <div>
-              <h3 className="font-playfair text-3xl font-bold text-white mb-6">What You'll Get</h3>
+              <h3 className="font-playfair text-3xl font-bold text-white mb-6">
+                What You'll Get
+              </h3>
             </div>
 
             {[
               {
                 icon: "🌱",
                 title: "Early Access",
-                description: "Be the first to use our revolutionary farming tools",
+                description:
+                  "Be the first to use our revolutionary farming tools",
               },
               {
                 icon: "📚",
                 title: "Exclusive Content",
-                description: "Access to farming guides, weather insights, and market data",
+                description:
+                  "Access to farming guides, weather insights, and market data",
               },
               {
                 icon: "🤝",
                 title: "Community Support",
-                description: "Connect with fellow farmers and agricultural experts",
+                description:
+                  "Connect with fellow farmers and agricultural experts",
               },
               {
                 icon: "💰",
@@ -282,7 +315,9 @@ export default function WaitlistSection() {
               >
                 <div className="text-2xl">{benefit.icon}</div>
                 <div>
-                  <h4 className="font-semibold text-white mb-1">{benefit.title}</h4>
+                  <h4 className="font-semibold text-white mb-1">
+                    {benefit.title}
+                  </h4>
                   <p className="text-gray-300 text-sm">{benefit.description}</p>
                 </div>
               </motion.div>
@@ -291,5 +326,5 @@ export default function WaitlistSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
